@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();//we do that because because express returns a function
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://user1:conveotest@cluster0.zu4llqn.mongodb.net/users?retryWrites=true&w=majority";//Conveo_Data_Base URI??
+const mongoose=require('mongoose');
 
 function middleware(req,res,next)
 {
@@ -9,10 +12,22 @@ function middleware(req,res,next)
 
 app.use(middleware);
 app.use(express.json());
+
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });//???
+async function connectToMongoDB() {
+    try {
+      await client.connect();
+      console.log('Connected to MongoDB');
+    } catch (error) {
+      console.error('Error connecting to MongoDB', error);
+    }
+  }
+  
+connectToMongoDB();
+//Connects to the DataBase,But it dosnt create users ?
 app.post('/users',(req,res) => {
-    //the data of the user will be inside the request body
-    //put the user's-data in a data stuct (array px)
-    res.send({message: "CREATE TEST"});
+    const newUser=req.body;
+    
     
 })
 
